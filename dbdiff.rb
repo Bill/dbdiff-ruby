@@ -7,6 +7,7 @@ class Enumerator
   end
   # http://stackoverflow.com/questions/16387530/enumeratoreach-restarts-sequence
   def each_remaining
+    return enum_for(__method__) unless block_given?
     loop do
       yield self.next
     end
@@ -19,7 +20,7 @@ module DBDiff
   # simple primary key is first field
   # precondition: records are ordered on their key: least to greatest
   # a is the old table, b is the new table
-  def outer_join( a, b)
+  def diff( a, b)
     return to_enum(__method__, a, b) unless block_given?
     loop do
       if a.at_end
